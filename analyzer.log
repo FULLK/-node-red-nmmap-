@@ -1,0 +1,12 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	analyzer
+#open	2025-06-23-02-00-57
+#fields	ts	cause	analyzer_kind	analyzer_name	uid	fuid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	failure_reason	failure_data
+#types	time	string	string	string	string	string	addr	port	addr	port	string	string
+1750615257.875218	violation	protocol	SSL	CXbPFq18OyjRUqWa4f	-	192.168.84.22	59083	192.168.84.22	5000	Invalid version late in TLS connection. Packet reported version: 8516	-
+1750615257.882486	violation	protocol	SSL	CSETSt27XiBcfJntx8	-	192.168.84.22	59095	192.168.84.22	5000	Invalid version late in TLS connection. Packet reported version: 8516	-
+1750615340.057889	violation	protocol	SSL	CRH4F64ouMkqGORvt7	-	192.168.84.22	59915	192.168.84.22	5000	Invalid version late in TLS connection. Packet reported version: 8516	-
+1750615399.178247	violation	protocol	SSL	C1m2RS1xCg8sTj1AB4	-	192.168.84.22	58543	192.168.84.22	5000	Invalid version late in TLS connection. Packet reported version: 8516	-

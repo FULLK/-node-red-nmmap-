@@ -1,0 +1,12 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	http
+#open	2025-06-19-22-03-32
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	trans_depth	method	host	uri	referrer	version	user_agent	origin	request_body_len	response_body_len	status_code	status_msg	info_code	info_msg	tags	username	password	proxied	orig_fuids	orig_filenames	orig_mime_types	resp_fuids	resp_filenames	resp_mime_types
+#types	time	string	addr	port	addr	port	count	string	string	string	string	string	string	string	count	count	count	string	count	string	set[enum]	string	string	set[string]	vector[string]	vector[string]	vector[string]	vector[string]	vector[string]	vector[string]
+1750341812.841143	CFm1AQ2ddGIlaudQ37	192.168.226.11	47558	91.189.91.83	80	1	-	-	-	-	1.1	-	-	0	0	304	Not Modified	-	-	(empty)	-	-	-	-	-	-	-	-	-
+1750341816.845900	CF5BFp2SjmdK0dy8gj	192.168.226.11	45098	91.189.91.81	80	1	-	-	-	-	1.1	-	-	0	4105	200	OK	-	-	(empty)	-	-	-	-	-	-	FRqYlQ1CJkpJc2r9n4	-	application/x-xz
+1750341813.049030	CFm1AQ2ddGIlaudQ37	192.168.226.11	47558	91.189.91.83	80	2	-	-	-	-	1.1	-	-	0	5484	200	OK	-	-	(empty)	-	-	-	-	-	-	Fdgwk716xnjoKjdTR4	-	text/plain
+#close	2025-06-20-12-38-11

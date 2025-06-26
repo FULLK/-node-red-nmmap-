@@ -1,0 +1,476 @@
+[
+    {
+        "id": "e80804343dc414e3",
+        "type": "tab",
+        "label": "流程 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "994191964dd12414",
+        "type": "group",
+        "z": "e80804343dc414e3",
+        "name": "即时捕获连接会话信息",
+        "style": {
+            "label": true,
+            "color": "#ff0000",
+            "fill": "#001f60"
+        },
+        "nodes": [
+            "944964d7bf6c15f7",
+            "bced24b8403241f2",
+            "f64b1d2f966086cb"
+        ],
+        "x": 614,
+        "y": 831.5,
+        "w": 1412,
+        "h": 149.5
+    },
+    {
+        "id": "c136c6448937d1bd",
+        "type": "group",
+        "z": "e80804343dc414e3",
+        "name": "监视并且生成csv",
+        "style": {
+            "label": true,
+            "stroke": "#92d04f",
+            "fill": "#6f2fa0"
+        },
+        "nodes": [
+            "8125fae664f5844b",
+            "e0841096a025b857",
+            "0d541c999aa10fa1"
+        ],
+        "x": 214,
+        "y": 1379,
+        "w": 2132,
+        "h": 189.5
+    },
+    {
+        "id": "39cbac86b0fee5c7",
+        "type": "group",
+        "z": "e80804343dc414e3",
+        "name": "读取csv并且查看是否有新内容",
+        "style": {
+            "label": true,
+            "fill": "#ffff00",
+            "color": "#b797cf",
+            "stroke": "#0070c0"
+        },
+        "nodes": [
+            "7f51e5e42e168cb1",
+            "6b3c5c4298f64033",
+            "1c3398af4a104d67",
+            "ea456063140fd178"
+        ],
+        "x": 1174,
+        "y": 999,
+        "w": 712,
+        "h": 262
+    },
+    {
+        "id": "c352365051f9be2e",
+        "type": "group",
+        "z": "e80804343dc414e3",
+        "name": "将新流量数据封装成请求发送给封装模型api的flask服务",
+        "style": {
+            "label": true,
+            "stroke": "#000000",
+            "fill": "#7f8faf",
+            "color": "#001f60"
+        },
+        "nodes": [
+            "32b589dbed85847a",
+            "669367db53843efe"
+        ],
+        "x": 1614,
+        "y": 1279,
+        "w": 432,
+        "h": 82
+    },
+    {
+        "id": "d963178cea38b7d7",
+        "type": "group",
+        "z": "e80804343dc414e3",
+        "name": "停止捕获流量",
+        "style": {
+            "stroke": "#6f2fa0",
+            "fill": "#ffff7f",
+            "label": true
+        },
+        "nodes": [
+            "c7afec3237d47b83",
+            "0d8d9be75b675ddf"
+        ],
+        "x": 594,
+        "y": 1119,
+        "w": 472,
+        "h": 82
+    },
+    {
+        "id": "944964d7bf6c15f7",
+        "type": "inject",
+        "z": "e80804343dc414e3",
+        "g": "994191964dd12414",
+        "name": "start zeek",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 720,
+        "y": 940,
+        "wires": [
+            [
+                "bced24b8403241f2"
+            ]
+        ]
+    },
+    {
+        "id": "8125fae664f5844b",
+        "type": "watch",
+        "z": "e80804343dc414e3",
+        "g": "c136c6448937d1bd",
+        "name": "",
+        "files": "/home/llk/iot_IDS/nmmap_ids/conn.log",
+        "recursive": false,
+        "x": 890,
+        "y": 1420,
+        "wires": [
+            [
+                "0d541c999aa10fa1"
+            ]
+        ]
+    },
+    {
+        "id": "7f51e5e42e168cb1",
+        "type": "debug",
+        "z": "e80804343dc414e3",
+        "g": "39cbac86b0fee5c7",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1780,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "6b3c5c4298f64033",
+        "type": "function",
+        "z": "e80804343dc414e3",
+        "g": "39cbac86b0fee5c7",
+        "name": "function 1",
+        "func": "let fileContent = msg.payload;  // 从file in节点获取文件内容\n\n// 获取当前文件的行数\nlet currentLineCount = fileContent.split('\\n').length;\n\n// 获取上次文件的行数\nlet previousLineCount = flow.get('previousLineCount') || 0;\n\n// 计算新增的行数\nlet newLines = currentLineCount - previousLineCount;\n\n// 如果有新增行，获取新增的内容并设置为 msg.payload\nif (newLines > 0) {\n    // 提取新增的行内容\n    let newContent = fileContent.split('\\n').slice(previousLineCount-1).join('\\n');\n    \n    // 设置新增的内容为 msg.payload\n    msg.payload = newContent;\n} else {\n    msg.payload = `没有新增行`;\n}\n\n// 更新上次文件的行数\nflow.set('previousLineCount', currentLineCount);\n\nmsg.headers = {};\nmsg.headers['Content-Type'] = 'application/json';\nmsg.payload = {\n    \"csv_str\":msg.payload\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1500,
+        "y": 1220,
+        "wires": [
+            [
+                "7f51e5e42e168cb1",
+                "669367db53843efe"
+            ]
+        ]
+    },
+    {
+        "id": "1c3398af4a104d67",
+        "type": "file in",
+        "z": "e80804343dc414e3",
+        "g": "39cbac86b0fee5c7",
+        "name": "",
+        "filename": "payload",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 1260,
+        "y": 1180,
+        "wires": [
+            [
+                "6b3c5c4298f64033",
+                "ea456063140fd178"
+            ]
+        ]
+    },
+    {
+        "id": "bced24b8403241f2",
+        "type": "exec",
+        "z": "e80804343dc414e3",
+        "g": "994191964dd12414",
+        "command": "sudo sh -c \"cd /home/llk/iot_IDS/nmmap_ids/ && /opt/zeek/bin/zeek -i eth0\"",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "true",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 1450,
+        "y": 880,
+        "wires": [
+            [
+                "f64b1d2f966086cb"
+            ],
+            [
+                "f64b1d2f966086cb"
+            ],
+            [
+                "f64b1d2f966086cb"
+            ]
+        ]
+    },
+    {
+        "id": "f64b1d2f966086cb",
+        "type": "debug",
+        "z": "e80804343dc414e3",
+        "g": "994191964dd12414",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1920,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "c7afec3237d47b83",
+        "type": "inject",
+        "z": "e80804343dc414e3",
+        "g": "d963178cea38b7d7",
+        "name": "kill process",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 700,
+        "y": 1160,
+        "wires": [
+            [
+                "0d8d9be75b675ddf"
+            ]
+        ]
+    },
+    {
+        "id": "0d8d9be75b675ddf",
+        "type": "change",
+        "z": "e80804343dc414e3",
+        "g": "d963178cea38b7d7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "kill",
+                "pt": "msg",
+                "to": "SIGKILL",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 970,
+        "y": 1160,
+        "wires": [
+            [
+                "bced24b8403241f2"
+            ]
+        ]
+    },
+    {
+        "id": "32b589dbed85847a",
+        "type": "debug",
+        "z": "e80804343dc414e3",
+        "g": "c352365051f9be2e",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1940,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "ea456063140fd178",
+        "type": "debug",
+        "z": "e80804343dc414e3",
+        "g": "39cbac86b0fee5c7",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1520,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "669367db53843efe",
+        "type": "http request",
+        "z": "e80804343dc414e3",
+        "g": "c352365051f9be2e",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "http://10.141.143.123:5000/predict",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": true,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1700,
+        "y": 1320,
+        "wires": [
+            [
+                "32b589dbed85847a"
+            ]
+        ]
+    },
+    {
+        "id": "e0841096a025b857",
+        "type": "change",
+        "z": "e80804343dc414e3",
+        "g": "c136c6448937d1bd",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "/home/llk/iot_IDS/nmmap_ids/temp_out.csv",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1310,
+        "y": 1420,
+        "wires": [
+            [
+                "1c3398af4a104d67"
+            ]
+        ]
+    },
+    {
+        "id": "cbbea03ea6384430",
+        "type": "csv",
+        "z": "e80804343dc414e3",
+        "name": "",
+        "spec": "rfc",
+        "sep": "\\t",
+        "hdrin": false,
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": true,
+        "include_null_values": true,
+        "x": 1850,
+        "y": 2040,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "64e6bd0b153a30f7",
+        "type": "exec",
+        "z": "e80804343dc414e3",
+        "command": "python3 /home/llk/iot_IDS/nmmap_ids/infer.py",
+        "addpay": "payload",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 1120,
+        "y": 2080,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "0d541c999aa10fa1",
+        "type": "exec",
+        "z": "e80804343dc414e3",
+        "g": "c136c6448937d1bd",
+        "command": "zeek-cut -d $'\\t' ts uid id.orig_h id.orig_p id.resp_h id.resp_p proto service duration orig_bytes resp_bytes conn_state local_orig local_resp missed_bytes history orig_pkts orig_ip_bytes resp_pkts resp_ip_bytes tunnel_parents < /home/llk/iot_IDS/nmmap_ids/conn.log | sed 's/\\t/,/g' > /home/llk/iot_IDS/nmmap_ids/temp_out.csv",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 1280,
+        "y": 1520,
+        "wires": [
+            [
+                "e0841096a025b857"
+            ],
+            [],
+            []
+        ]
+    }
+]

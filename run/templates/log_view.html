@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预测日志</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .entry { margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; background: #fff; }
+        .csv { font-family: monospace; white-space: pre-wrap; }
+        .prediction { font-weight: bold; color: #007BFF; }
+    </style>
+</head>
+<body>
+    <h1>预测记录</h1>
+    <div id="log-container"></div>
+
+    <script>
+        async function fetchLogs() {
+            const res = await fetch('/log');
+            const logs = await res.json();
+            const container = document.getElementById('log-container');
+            container.innerHTML = '';  // 清空
+            logs.forEach((log, index) => {
+                const div = document.createElement('div');
+                div.className = 'entry';
+                div.innerHTML = `
+                    <div><strong>#${index + 1}</strong></div>
+                    <div class="csv">CSV: ${log.csv_str}</div>
+                    <div class="prediction">Prediction: ${log.prediction}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // 初始加载 + 每3秒刷新一次
+        fetchLogs();
+        setInterval(fetchLogs, 3000);
+    </script>
+</body>
+</html>

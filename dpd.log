@@ -1,0 +1,12 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	dpd
+#open	2025-06-23-02-00-57
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	proto	analyzer	failure_reason
+#types	time	string	addr	port	addr	port	enum	string	string
+1750615257.875218	CXbPFq18OyjRUqWa4f	192.168.84.22	59083	192.168.84.22	5000	tcp	SSL	Invalid version late in TLS connection. Packet reported version: 8516
+1750615257.882486	CSETSt27XiBcfJntx8	192.168.84.22	59095	192.168.84.22	5000	tcp	SSL	Invalid version late in TLS connection. Packet reported version: 8516
+1750615340.057889	CRH4F64ouMkqGORvt7	192.168.84.22	59915	192.168.84.22	5000	tcp	SSL	Invalid version late in TLS connection. Packet reported version: 8516
+1750615399.178247	C1m2RS1xCg8sTj1AB4	192.168.84.22	58543	192.168.84.22	5000	tcp	SSL	Invalid version late in TLS connection. Packet reported version: 8516

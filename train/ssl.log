@@ -1,0 +1,17 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	ssl
+#open	2025-06-21-13-56-47
+#fields	ts	uid	id.orig_h	id.orig_p	id.resp_h	id.resp_p	version	cipher	curve	server_name	resumed	last_alert	next_protocol	established	ssl_history	cert_chain_fps	client_cert_chain_fps	sni_matches_cert
+#types	time	string	addr	port	addr	port	string	string	string	string	bool	string	string	bool	string	vector[string]	vector[string]	bool
+1750485102.258639	CEpiPoF76tQnfD8yc	192.168.226.11	46158	13.107.5.93	443	TLSv13	TLS_AES_256_GCM_SHA384	secp521r1	-	F	-	-	F	ji	-	-	-
+1750486929.154450	CUOGSi15QVotAn9zpc	192.168.226.11	47564	13.107.5.93	443	TLSv13	TLS_AES_256_GCM_SHA384	secp521r1	-	F	-	-	F	ji	-	-	-
+1750488757.186065	CNpyyy3MNqgOPVkRa7	192.168.226.11	45310	13.107.5.93	443	TLSv13	TLS_AES_256_GCM_SHA384	secp521r1	-	F	-	-	F	ji	-	-	-
+1750490585.393855	CCEBuN3Qw4G7igvjEi	192.168.226.11	46274	13.107.5.93	443	TLSv13	TLS_AES_256_GCM_SHA384	secp521r1	-	F	-	-	F	ji	-	-	-
+1750492421.375033	CCX7Io2QHL2iKtrccb	192.168.226.11	47050	13.107.5.93	443	TLSv13	TLS_AES_256_GCM_SHA384	secp521r1	-	F	-	-	F	ji	-	-	-
+1750494251.846415	C0FKPK23dd15yXUvT9	192.168.226.11	45378	13.107.5.93	443	TLSv13	TLS_AES_256_GCM_SHA384	secp521r1	-	F	-	-	F	jis	-	-	-
+1750496084.123633	CFlM7Q33I4re4vfy5g	192.168.226.11	47230	13.107.13.93	443	TLSv13	TLS_AES_256_GCM_SHA384	secp521r1	-	F	-	-	F	jis	-	-	-
+1750497915.768135	CPe4P82CmQh4GfXIhh	192.168.226.11	46440	13.107.5.93	443	TLSv13	TLS_AES_256_GCM_SHA384	secp521r1	-	F	-	-	F	ji	-	-	-
+#close	2025-06-21-17-53-35
